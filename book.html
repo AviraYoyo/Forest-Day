@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forest Day · Our Book</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar" id="topbar"></header>
+
+<main class="wrap">
+  <div class="page-head">
+    <h1>📖 Our Big Forest Day</h1>
+    <div class="sub">
+      Our Big Forest Day
+    </div>
+  </div>
+
+  <div class="mode-switch">
+    <button id="autoBtn">▶ Read together <span class="cn-text">全班朗讀</span></button>
+    <span class="chip" style="align-self:center">← → arrow keys work too</span>
+  </div>
+
+  <div class="book-stage rise" id="bookStage">
+    <div class="book-img-wrap">
+      <img class="book-img" id="bookImg" src="" alt="">
+      <div class="book-page-no" id="bookPageNo"></div>
+    </div>
+    <div class="book-text" id="bookText"></div>
+    <div class="book-nav">
+      <button class="btn btn-ghost" id="prevBtn">← Back</button>
+      <div class="dots" id="dots"></div>
+      <button class="btn btn-primary" id="nextBtn">Next →</button>
+    </div>
+  </div>
+
+  <h2 style="margin:34px 0 4px;font-size:22px">🦁 I Can Try! <span class="cn-text" style="font-weight:400;color:var(--ink-2);font-size:14px">迷你讀本 — 我很害怕，我可以試試</span></h2>
+  <p style="color:var(--ink-2);font-size:14.5px;margin:0 0 14px">
+    A tiny book about being brave.
+    <span class="cn-text">一個關於勇敢的小故事。讀到最後一句時，全班一起站起來說三次。</span>
+  </p>
+  <div class="grid g3" id="tryBox"></div>
+
+</main>
+
+<footer id="footer"></footer>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/book.js"></script>
+</body>
+</html>

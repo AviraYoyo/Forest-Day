@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forest Day · Sentences</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar" id="topbar"></header>
+
+<main class="wrap">
+  <div class="page-head">
+    <h1>🧩 Sentence Factory</h1>
+    <div class="sub">
+      Build sentences. Sort the rules.
+    </div>
+  </div>
+
+  <!-- 遊戲一 -->
+  <div class="card" style="margin-bottom:20px">
+    <h2 style="margin:0 0 4px;font-size:20px">Game 1 · Build the sentence <span class="cn-text" style="font-weight:400;color:var(--ink-2);font-size:13px">拖字塊造句</span></h2>
+    <p style="color:var(--ink-2);font-size:14.5px;margin:0 0 10px">
+      Tap one word from each row. Tap a filled box to put the word back.
+    </p>
+
+    <div class="tile-bank">
+      <div class="tile-row">
+        <div class="row-label">Who?</div>
+        <div class="word-pool" id="poolSubj"></div>
+      </div>
+      <div class="tile-row">
+        <div class="row-label">is / am / are</div>
+        <div class="word-pool" id="poolBe"></div>
+      </div>
+      <div class="tile-row">
+        <div class="row-label">Verb + ing</div>
+        <div class="word-pool" id="poolVerb"></div>
+      </div>
+    </div>
+
+    <div class="slot-row" id="slotRow">
+      <div class="slot" data-slot="WHO">WHO</div>
+      <div class="slot" data-slot="is/am/are">is/am/are</div>
+      <div class="slot" data-slot="VERB-ing">VERB-ing</div>
+    </div>
+
+    <div class="btn-row" style="justify-content:flex-start;margin-top:14px">
+      <button class="btn btn-primary" id="checkSentence">Check my sentence</button>
+      <button class="btn btn-ghost" id="newSentence">New words</button>
+      <button class="btn btn-ghost" id="clearSentence">Clear</button>
+    </div>
+    <div class="fb" id="sentFeedback" style="margin-top:12px"></div>
+
+    <div class="rule-box rule-must" style="margin-top:16px">
+      <h4>Remember! 🔑</h4>
+      <ul>
+        <li><b>He / She / It</b> → <b>is</b> ___ing</li>
+        <li><b>I</b> → <b>am</b> ___ing</li>
+        <li><b>We / You / They</b> → <b>are</b> ___ing</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 遊戲二 -->
+  <div class="card">
+    <h2 style="margin:0 0 4px;font-size:20px">Game 2 · Sort the rules <span class="cn-text" style="font-weight:400;color:var(--ink-2);font-size:13px">把規則拖進正確的桶</span></h2>
+    <p style="color:var(--ink-2);font-size:14.5px;margin:0 0 12px">
+      Drag each card into the right bucket.
+      <span class="cn-text">把卡片拖進「You must」或「You must not」。答對 8 張就過關。</span>
+    </p>
+
+    <div class="word-pool" id="sortPool"></div>
+
+    <div class="buckets">
+      <div class="bucket must" id="bucketMust">
+        <h4>You must… ✔</h4>
+        <div class="drop-zone"></div>
+      </div>
+      <div class="bucket mustnot" id="bucketMustNot">
+        <h4>You must not… ✘</h4>
+        <div class="drop-zone"></div>
+      </div>
+    </div>
+
+    <div class="btn-row" style="justify-content:flex-start;margin-top:14px">
+      <button class="btn btn-ghost" id="sortReset">Shuffle again</button>
+    </div>
+    <div class="fb" id="sortFeedback" style="margin-top:12px"></div>
+  </div>
+</main>
+
+<footer id="footer"></footer>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/sentence.js"></script>
+</body>
+</html>

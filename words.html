@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forest Day · Words</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar" id="topbar"></header>
+
+<main class="wrap">
+  <div class="page-head">
+    <h1>🔤 Forest Words Bank</h1>
+    <div class="sub">
+      25 words. Click a card to flip it.
+    </div>
+  </div>
+
+  <div class="tabs" id="wordTabs"></div>
+  <div class="flip-grid" id="flipGrid"></div>
+
+  <div class="card" style="margin-top:22px">
+    <h3 style="margin:0 0 8px;font-size:16px">Spelling help 🖊️ <span class="cn-text" style="font-weight:400;color:var(--ink-2);font-size:13px">給較強同學的拼字提示</span></h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Double the last letter</th><th>Do not double</th><th>Special</th></tr>
+        <tr>
+          <td>run → <b>running</b><br>swim → <b>swimming</b><br>sit → <b>sitting</b></td>
+          <td>climb → <b>climbing</b><br>build → <b>building</b><br>splash → <b>splashing</b></td>
+          <td>carry → <b>carrying</b><br><span style="color:var(--ink-2);font-size:13px">tie → <b>tying</b>（去 e 加 -ing，不是 tieing）</span></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</main>
+
+<footer id="footer"></footer>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/flip.js"></script>
+</body>
+</html>

@@ -1,0 +1,411 @@
+/* =========================================================
+   Forest Day — 主樣式（淺色 · 森林感 · 活潑）
+   Mobile-first
+   ========================================================= */
+:root {
+  --bg:        #FBF8F1;
+  --card:      #FFFFFF;
+  --green:     #2F6B3F;
+  --green-2:   #7FA86B;
+  --blue:      #4FA3C7;
+  --yellow:    #F2B33D;
+  --brown:     #A9714B;
+  --red:       #D9534F;
+  --ink:       #22301F;
+  --ink-2:     #5A6B54;
+  --line:      #E4E0D3;
+  --radius:    18px;
+  --shadow:    0 2px 10px rgba(47,107,63,.08);
+  --shadow-lg: 0 8px 28px rgba(47,107,63,.13);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang HK", "PingFang TC",
+               "Noto Sans TC", "Microsoft JhengHei", "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+img { max-width: 100%; display: block; }
+a { color: var(--green); }
+
+/* ---------- 中文解釋開關 ---------- */
+[data-cn] { display: inline; }
+html.cn-on .cn-text { display: inline; }
+html:not(.cn-on) .cn-text { display: none; }
+
+/* =========================================================
+   Header / Nav
+   ========================================================= */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(251,248,241,.94);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.topbar-inner {
+  max-width: 1120px; margin: 0 auto;
+  padding: 10px 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.brand {
+  display: flex; align-items: center; gap: 8px;
+  font-weight: 800; font-size: 17px; color: var(--green);
+  text-decoration: none; white-space: nowrap;
+}
+.brand span.leaf { font-size: 20px; }
+
+.nav-links {
+  display: flex; gap: 4px; overflow-x: auto;
+  flex: 1; scrollbar-width: none;
+}
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-links a {
+  padding: 7px 12px; border-radius: 999px;
+  text-decoration: none; color: var(--ink-2);
+  font-size: 14px; font-weight: 600; white-space: nowrap;
+}
+.nav-links a.active { background: var(--green); color: #fff; }
+.nav-links a:hover { background: #EEF3E8; color: var(--green); }
+
+.cn-toggle {
+  flex-shrink: 0;
+  border: 2px solid var(--green-2);
+  background: #fff; color: var(--green);
+  border-radius: 999px; padding: 6px 13px;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  transition: .18s;
+}
+.cn-toggle.on { background: var(--green); color: #fff; }
+
+/* =========================================================
+   Layout
+   ========================================================= */
+.wrap { max-width: 1120px; margin: 0 auto; padding: 24px 16px 64px; }
+
+.page-head { margin-bottom: 22px; }
+.page-head h1 { font-size: 30px; margin: 0 0 6px; letter-spacing: -.3px; }
+.page-head .sub { color: var(--ink-2); font-size: 15px; }
+.page-head .sub .cn-text { display: block; font-size: 14px; margin-top: 2px; }
+
+.card {
+  background: var(--card); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 20px;
+  border: 1px solid var(--line);
+}
+.grid { display: grid; gap: 14px; }
+.g2 { grid-template-columns: 1fr; }
+.g3 { grid-template-columns: 1fr; }
+@media (min-width: 640px) {
+  .g2 { grid-template-columns: repeat(2, 1fr); }
+  .g3 { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* =========================================================
+   Hero (index)
+   ========================================================= */
+.hero {
+  background: linear-gradient(160deg, #DFF0E2 0%, #F4F1E4 60%, #FBEFD3 100%);
+  border-radius: 26px; padding: 30px 22px; margin-bottom: 26px;
+  border: 1px solid #E1EBD9;
+  text-align: center;
+}
+.hero .badge {
+  display: inline-block; background: var(--yellow); color: #5A4200;
+  font-size: 12px; font-weight: 800; padding: 5px 13px;
+  border-radius: 999px; letter-spacing: .5px; margin-bottom: 12px;
+}
+.hero h1 { font-size: 34px; margin: 0 0 8px; letter-spacing: -.6px; }
+.hero p { color: var(--ink-2); margin: 0 auto 18px; max-width: 560px; }
+.hero-img {
+  border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-lg);
+  margin: 0 auto 20px; max-width: 720px;
+}
+
+.countdown {
+  display: flex; justify-content: center; gap: 10px;
+  margin: 18px 0 20px; flex-wrap: wrap;
+}
+.cd-box {
+  background: #fff; border-radius: 14px; padding: 10px 14px;
+  box-shadow: var(--shadow); min-width: 64px;
+  border: 1px solid var(--line);
+}
+.cd-box .n { font-size: 26px; font-weight: 800; color: var(--green); line-height: 1.1; }
+.cd-box .l { font-size: 11px; color: var(--ink-2); text-transform: uppercase; letter-spacing: .6px; }
+
+.btn-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  display: inline-block; padding: 12px 22px; border-radius: 999px;
+  font-weight: 700; text-decoration: none; font-size: 15px;
+  transition: .16s; border: none; cursor: pointer;
+  font-family: inherit;
+}
+.btn-primary { background: var(--green); color: #fff; }
+.btn-primary:hover { background: #264f33; transform: translateY(-1px); }
+.btn-blue { background: var(--blue); color: #fff; }
+.btn-yellow { background: var(--yellow); color: #4A3400; }
+.btn-ghost { background: #fff; color: var(--green); border: 2px solid var(--green-2); }
+.btn:hover { transform: translateY(-1px); }
+
+/* =========================================================
+   Goal chips / rules
+   ========================================================= */
+.chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.chip {
+  background: #EEF6EA; color: var(--green);
+  border: 1px solid #D5E6D2; border-radius: 999px;
+  padding: 6px 13px; font-size: 13px; font-weight: 700;
+}
+.chip.blue { background: #E6F3F9; color: #2C6C86; border-color: #C9E4F0; }
+.chip.yellow { background: #FDF1D6; color: #7A5600; border-color: #F2DEB0; }
+
+.rule-box { border-radius: 14px; padding: 14px 16px; margin-top: 8px; }
+.rule-must    { background: #EEF6EA; border-left: 5px solid var(--green); }
+.rule-mustnot { background: #FBEDEC; border-left: 5px solid var(--red); }
+.rule-box h4 { margin: 0 0 6px; font-size: 14px; }
+.rule-must h4 { color: var(--green); }
+.rule-mustnot h4 { color: var(--red); }
+.rule-box ul { margin: 0; padding-left: 18px; }
+.rule-box li { font-size: 14.5px; margin: 3px 0; }
+
+/* =========================================================
+   Book reader
+   ========================================================= */
+.book-stage {
+  background: var(--card); border-radius: 22px; overflow: hidden;
+  box-shadow: var(--shadow-lg); border: 1px solid var(--line);
+}
+.book-img-wrap { position: relative; background: #F0EDE2; }
+.book-img { width: 100%; height: auto; }
+.book-page-no {
+  position: absolute; top: 10px; right: 12px;
+  background: rgba(47,107,63,.86); color: #fff;
+  font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px;
+}
+.book-text {
+  padding: 18px 20px 22px; font-size: 19px; line-height: 1.55;
+}
+.book-text .en-line { font-weight: 600; }
+.book-cn {
+  display: block; margin-top: 8px; font-size: 15px; color: var(--ink-2);
+  font-weight: 400;
+}
+html.cn-on .book-cn { display: block; }
+html:not(.cn-on) .book-cn { display: none; }
+/* 詩頁（In the forest — by P.2） */
+.poem-en { line-height: 1.9; font-weight: 600; }
+.poem-cn { line-height: 1.9; }
+.book-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px; padding: 14px 20px; border-top: 1px solid var(--line);
+  background: #FCFBF6;
+}
+.book-nav button { min-width: 90px; }
+.dots { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; }
+.dots button {
+  width: 9px; height: 9px; padding: 0; border-radius: 999px;
+  border: none; background: #D6D2C4; cursor: pointer;
+}
+.dots button.on { background: var(--green); width: 22px; }
+
+.mode-switch {
+  display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap;
+}
+.mode-switch button {
+  padding: 8px 15px; border-radius: 999px; border: 1.5px solid var(--line);
+  background: #fff; font-weight: 700; font-size: 13.5px; cursor: pointer;
+  color: var(--ink-2);
+}
+.mode-switch button.on { background: var(--green); border-color: var(--green); color: #fff; }
+
+/* =========================================================
+   Words — flip cards
+   ========================================================= */
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
+.tabs button {
+  padding: 9px 16px; border-radius: 999px; border: 1.5px solid var(--line);
+  background: #fff; cursor: pointer; font-weight: 700; font-size: 13.5px;
+  color: var(--ink-2); font-family: inherit;
+}
+.tabs button.on { background: var(--green); color: #fff; border-color: var(--green); }
+
+.flip-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 560px) { .flip-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 860px) { .flip-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.flip { perspective: 1200px; height: 168px; cursor: pointer; }
+.flip-inner {
+  position: relative; width: 100%; height: 100%;
+  transition: transform .5s; transform-style: preserve-3d;
+}
+.flip.flipped .flip-inner { transform: rotateY(180deg); }
+.flip-face {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 14px; text-align: center; border: 1px solid var(--line);
+}
+.flip-front { background: #fff; }
+.flip-front .ic { font-size: 40px; line-height: 1; margin-bottom: 8px; }
+.flip-front .w { font-size: 19px; font-weight: 800; color: var(--green); }
+.flip-front .pos { font-size: 11.5px; color: var(--ink-2); margin-top: 3px; }
+.flip-back { background: var(--green); color: #fff; transform: rotateY(180deg); }
+.flip-back .cn-w { font-size: 22px; font-weight: 800; }
+.flip-back .sent { font-size: 12.5px; margin-top: 6px; opacity: .92; }
+
+/* =========================================================
+   Sentences — drag & drop
+   ========================================================= */
+/* 三行字卡：Who / is-am-are / verb-ing */
+.tile-bank { display: flex; flex-direction: column; gap: 10px; margin: 12px 0 6px; }
+.tile-row {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 10px 12px; border-radius: 14px; background: #FAF8F2;
+  border: 1px solid #EDE7D8;
+}
+.row-label {
+  flex: 0 0 92px; font-size: 13px; font-weight: 800; letter-spacing: .3px;
+  color: var(--ink-2); text-transform: uppercase;
+}
+.tile-row .word-pool { margin: 0; flex: 1 1 220px; }
+.tile.used { display: none; }
+.tile:hover { transform: translateY(-1px); }
+.slot.pop { animation: pop .18s ease; }
+@keyframes pop { from { transform: scale(.86); } to { transform: scale(1); } }
+.word-pool { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+.tile {
+  padding: 10px 15px; border-radius: 12px; font-weight: 700; font-size: 15px;
+  cursor: grab; user-select: none; border: 2px solid transparent;
+  box-shadow: var(--shadow);
+}
+.tile.subj { background: #E6F3F9; color: #2C6C86; }
+.tile.be   { background: #FDF1D6; color: #7A5600; }
+.tile.verb { background: #EEF6EA; color: var(--green); }
+.tile.dragging { opacity: .5; cursor: grabbing; }
+.slot-row {
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  min-height: 56px; padding: 10px; background: #F6F3EA;
+  border-radius: 14px; border: 2px dashed #D8D2BF;
+}
+.slot-row.over { border-color: var(--green-2); background: #EFF6EA; }
+.slot {
+  min-width: 78px; min-height: 40px; border-radius: 11px;
+  background: #fff; border: 2px dashed #D8D2BF;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: #C0BAa8; font-weight: 700;
+}
+.slot.filled { border-style: solid; border-color: var(--green-2); color: var(--ink); }
+.fb { margin-top: 12px; padding: 11px 14px; border-radius: 12px; font-weight: 700; font-size: 14.5px; }
+.fb.ok   { background: #EEF6EA; color: var(--green); }
+.fb.bad  { background: #FBEDEC; color: var(--red); }
+
+.buckets { display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .buckets { grid-template-columns: repeat(2,1fr); } }
+.bucket {
+  border-radius: var(--radius); padding: 16px; min-height: 170px;
+  border: 2px dashed #D8D2BF; background: #F6F3EA;
+}
+.bucket.over { border-color: var(--green-2); }
+.bucket h4 { margin: 0 0 10px; font-size: 15px; }
+.bucket.must h4 { color: var(--green); }
+.bucket.mustnot h4 { color: var(--red); }
+.bucket .drop-zone { display: flex; flex-direction: column; gap: 7px; }
+
+/* =========================================================
+   Quiz
+   ========================================================= */
+.quiz-q { margin-bottom: 20px; }
+.quiz-q .qimg {
+  border-radius: 14px; overflow: hidden; margin-bottom: 10px;
+  max-width: 380px; box-shadow: var(--shadow);
+}
+.quiz-q h4 { font-size: 17px; margin: 0 0 10px; }
+.opt {
+  display: block; width: 100%; text-align: left; padding: 11px 15px;
+  border-radius: 12px; border: 2px solid var(--line); background: #fff;
+  margin-bottom: 7px; cursor: pointer; font-size: 15px; font-weight: 600;
+  font-family: inherit; color: var(--ink); transition: .14s;
+}
+.opt:hover { border-color: var(--green-2); background: #F4F9F1; }
+.opt.sel-right { border-color: var(--green); background: #EAF5E6; color: var(--green); }
+.opt.sel-wrong { border-color: var(--red); background: #FBEDEC; color: var(--red); }
+.opt:disabled { cursor: default; opacity: .72; }
+
+.cert {
+  background: linear-gradient(150deg,#FFFDF6,#F6F1E0);
+  border: 3px solid var(--yellow); border-radius: 22px;
+  padding: 28px 22px; text-align: center; margin-top: 22px;
+}
+.cert h3 { margin: 0 0 6px; font-size: 24px; color: var(--green); }
+.cert .name-input {
+  font-size: 20px; font-weight: 800; text-align: center;
+  border: none; border-bottom: 2px dashed var(--yellow);
+  background: transparent; padding: 6px 12px; margin: 12px auto 4px;
+  width: min(320px, 90%); font-family: inherit; color: var(--ink);
+}
+.cert .medal { font-size: 52px; margin: 6px 0; }
+.cert p { color: var(--ink-2); font-size: 13.5px; }
+
+.score-bar { font-size: 18px; font-weight: 800; color: var(--green); margin: 16px 0; }
+
+/* =========================================================
+   Bring list
+   ========================================================= */
+.bring-item {
+  display: flex; align-items: center; gap: 12px;
+  background: #fff; border: 1px solid var(--line); border-radius: 14px;
+  padding: 13px 15px; box-shadow: var(--shadow);
+}
+.bring-item input[type=checkbox] {
+  width: 22px; height: 22px; accent-color: var(--green); cursor: pointer;
+  flex-shrink: 0;
+}
+.bring-item .ic { font-size: 24px; }
+.bring-item .tx { flex: 1; }
+.bring-item .en { font-weight: 700; font-size: 15px; }
+.bring-item .cn { font-size: 13px; color: var(--ink-2); margin-top: 1px; }
+.bring-item.done .en { text-decoration: line-through; color: var(--ink-2); }
+
+/* =========================================================
+   Parents / tables
+   ========================================================= */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+th, td { padding: 9px 11px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+th { background: #F1EFE6; font-weight: 800; color: var(--ink); }
+td .cn { color: var(--ink-2); font-size: 13px; }
+
+.book-card h4 { margin: 0 0 4px; font-size: 16.5px; }
+.book-card .au { color: var(--ink-2); font-size: 13.5px; margin-bottom: 8px; }
+.book-card .why { font-size: 14px; }
+.book-tag {
+  display: inline-block; font-size: 11.5px; font-weight: 800;
+  padding: 3px 10px; border-radius: 999px; margin-top: 9px;
+  background: #FDF1D6; color: #7A5600;
+}
+.book-tag.used { background: #E6F3F9; color: #2C6C86; }
+
+.notice {
+  background: #FDF1D6; border-left: 4px solid var(--yellow);
+  padding: 12px 15px; border-radius: 10px; font-size: 14px; margin: 14px 0;
+}
+.notice.warn { background: #FBEDEC; border-left-color: var(--red); }
+
+footer {
+  border-top: 1px solid var(--line); padding: 20px 16px 34px;
+  text-align: center; color: var(--ink-2); font-size: 13px;
+  margin-top: 30px;
+}
+
+/* reveal animation */
+@keyframes rise { from { opacity:0; transform: translateY(10px);} to {opacity:1; transform:none;} }
+.rise { animation: rise .45s ease both; }
+.rise-1 { animation-delay: .05s; } .rise-2 { animation-delay: .12s; }
+.rise-3 { animation-delay: .19s; } .rise-4 { animation-delay: .26s; }

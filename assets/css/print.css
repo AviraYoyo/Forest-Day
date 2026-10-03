@@ -1,0 +1,27 @@
+/* A4 列印樣式 — 已在 style.css 內含 @media print，此檔供工作紙單獨引用 */
+
+@media print {
+  @page { size: A4; margin: 12mm; }
+
+  .topbar, .btn-row, .no-print, footer, .cn-toggle, .book-nav, .tabs { display: none !important; }
+
+  body { font-size: 12.5pt; background: #fff; color: #000; }
+  .wrap { max-width: none; padding: 0; }
+
+  .card {
+    box-shadow: none; border: 1.2pt solid #666; break-inside: avoid;
+    padding: 12pt; border-radius: 0;
+  }
+
+  h1 { font-size: 19pt; }
+  h2 { font-size: 15pt; }
+  h3 { font-size: 13pt; }
+
+  .flip { height: auto; page-break-inside: avoid; box-shadow: none; }
+  .flip-inner { transform: none !important; }
+  .flip-back { display: none; }
+  .flip-front { position: static; }
+
+  .quiz-q { page-break-inside: avoid; }
+  .bring-item { box-shadow: none; }
+}
