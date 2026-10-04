@@ -20,12 +20,12 @@ const NAV = [
   { href: "words.html",     en: "Words",           cn: "詞語銀行",   icon: "🔤" },
   { href: "sentences.html", en: "Sentences",       cn: "句子工場",   icon: "🧩" },
   { href: "quiz.html",      en: "Quiz",            cn: "小測驗",     icon: "⭐" },
-  { href: "bring.html",     en: "What to Bring",   cn: "活動須知",   icon: "🎒" },
-  { href: "parents.html",   en: "Grown-ups",       cn: "老師家長區", icon: "👨‍👩‍👧" }
+  { href: "bring.html",     en: "What to Bring",   cn: "活動須知",   icon: "🎒" }
+  /* Grown-ups（parents.html）已從導覽列隱藏，老師可用網址直接開：parents.html */
 ];
 
 /* =========================================================
-   25 個目標詞（4 個主題組）
+   27 個目標詞（4 個主題組）
    ========================================================= */
 const WORDS = [
   // A. 大自然與場地（7）
@@ -36,14 +36,16 @@ const WORDS = [
   { en: "tree",               cn: "樹",       grp: "nature",  pos: "n.",   icon: "🌳", sent: "It is a big tree." },
   { en: "bird",               cn: "小鳥",     grp: "nature",  pos: "n.",   icon: "🐦", sent: "The bird is singing." },
   { en: "bamboo",             cn: "竹",       grp: "nature",  pos: "n.",   icon: "🎍", sent: "The bamboo is long and green.", note: "只要求指認圖片" },
-  // B. 動作與物件（7）——現在進行式主力
+  // B. 動作與物件（9）——現在進行式主力
   { en: "build",   ing: "building",   cn: "建造", grp: "action", pos: "v.", icon: "🧱", sent: "We are building a raft." },
   { en: "climb",   ing: "climbing",   cn: "攀爬", grp: "action", pos: "v.", icon: "🧗", sent: "She is climbing the rope." },
   { en: "catch",   ing: "catching",   cn: "捉",   grp: "action", pos: "v.", icon: "🐟", sent: "He is catching a fish." },
   { en: "splash",  ing: "splashing",  cn: "潑水", grp: "action", pos: "v.", icon: "💦", sent: "We are splashing in the water." },
   { en: "carry",   ing: "carrying",   cn: "搬運", grp: "action", pos: "v.", icon: "📦", sent: "Amy is carrying an inner tube." },
-  { en: "tie",     ing: "tying",      cn: "綁",   grp: "action", pos: "v.", icon: "🪢", sent: "Tom is tying the bamboo.", note: "tie → tying（去 e 加 -ing）" },
+  { en: "tie",     ing: "tying",      cn: "綁",   grp: "action", pos: "v.", icon: "🔗", sent: "Tom is tying the bamboo.", note: "tie → tying (drop the e, then add -ing)" },
   { en: "raft",               cn: "竹筏",     grp: "action",  pos: "n.",   icon: "🛶", sent: "Our raft is on the water!" },
+  { en: "rope",               cn: "繩",       grp: "action",  pos: "n.",   icon: "🪢", sent: "The rope is long and strong." },
+  { en: "inner tube",         cn: "泳圈內胎", grp: "action",  pos: "n.",   icon: "🛟", sent: "Amy is carrying an inner tube." },
   // C. 裝備
   { en: "long-sleeve shirt",  cn: "長袖衫",   grp: "bring", pos: "n.", icon: "👕", sent: "I have my long-sleeve shirt." },
   { en: "walking shoes",      cn: "步行鞋",   grp: "bring", pos: "n.", icon: "👟", sent: "My walking shoes are brown." },

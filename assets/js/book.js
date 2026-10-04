@@ -30,10 +30,14 @@
     pageNo.textContent = pageLabel(p);
     if (titleEl) titleEl.textContent = p.title ? p.title : '';
     if (p.poem) {
+      txt.classList.add('is-poem');
+      stage.classList.add('is-poem');
       txt.innerHTML = `
         <span class="en-line poem-en">${multiline(p.en)}</span>
         <span class="book-cn poem-cn">${multiline(p.cn)}</span>`;
     } else {
+      txt.classList.remove('is-poem');
+      stage.classList.remove('is-poem');
       txt.innerHTML = `
         <span class="en-line">${esc(p.en)}</span>
         <span class="book-cn">${esc(p.cn)}</span>`;
