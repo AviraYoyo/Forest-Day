@@ -415,8 +415,14 @@ html:not(.cn-on) .book-cn { display: none; }
 .tile {
   padding: 10px 15px; border-radius: 12px; font-weight: 700; font-size: 15px;
   cursor: grab; user-select: none; border: 2px solid transparent;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow); touch-action: manipulation;
 }
+/* 點選（手機／電腦皆可用）：選取後再點空格或桶 */
+.tile.picked {
+  border-color: var(--green-2); transform: translateY(-2px);
+  box-shadow: 0 0 0 4px rgba(120,168,72,.18), var(--shadow);
+}
+.tile.done { cursor: default; }
 .tile.subj { background: #E6F3F9; color: #2C6C86; }
 .tile.be   { background: #FDF1D6; color: #7A5600; }
 .tile.verb { background: #EEF6EA; color: var(--green); }
@@ -426,13 +432,34 @@ html:not(.cn-on) .book-cn { display: none; }
   min-height: 56px; padding: 10px; background: #F6F3EA;
   border-radius: 14px; border: 2px dashed #D8D2BF;
 }
-.slot-row.over { border-color: var(--green-2); background: #EFF6EA; }
+/* 手機：標題移到字卡上方、字卡縮小，讓三行字卡＋空格能在同一屏 */
+@media (max-width: 700px) {
+  .tile-bank { gap: 8px; }
+  .tile-row {
+    flex-direction: column; align-items: stretch; gap: 6px;
+    padding: 8px 10px;
+  }
+  .row-label { flex: none; font-size: 11.5px; }
+  /* 直行時 flex-basis 220px 會變成高度，這裡改回自動 */
+  .tile-row .word-pool { flex: 0 0 auto; gap: 6px; }
+  .tile { padding: 8px 12px; font-size: 14px; }
+  .slot-row {
+    position: sticky; bottom: 0; z-index: 6;
+    box-shadow: 0 -8px 18px rgba(0, 0, 0, .07);
+  }
+}
+.slot-row.over,
+.slot-row.choosing { border-color: var(--green-2); background: #EFF6EA; }
 .slot {
   min-width: 78px; min-height: 40px; border-radius: 11px;
   background: #fff; border: 2px dashed #D8D2BF;
   display: flex; align-items: center; justify-content: center;
   font-size: 14px; color: #C0BAa8; font-weight: 700;
+  cursor: pointer; touch-action: manipulation;
 }
+/* 已選字卡時，空格亮起來提示「點這裡」 */
+.slot-row.choosing .slot:not(.filled) { border-color: var(--green-2); background: #fff; }
+.slot.over { border-color: var(--green-2); }
 .slot.filled { border-style: solid; border-color: var(--green-2); color: var(--ink); }
 .fb { margin-top: 12px; padding: 11px 14px; border-radius: 12px; font-weight: 700; font-size: 14.5px; }
 .fb.ok   { background: #EEF6EA; color: var(--green); }
@@ -443,6 +470,7 @@ html:not(.cn-on) .book-cn { display: none; }
 .bucket {
   border-radius: var(--radius); padding: 16px; min-height: 170px;
   border: 2px dashed #D8D2BF; background: #F6F3EA;
+  cursor: pointer; touch-action: manipulation;
 }
 .bucket.over { border-color: var(--green-2); }
 .bucket h4 { margin: 0 0 10px; font-size: 15px; }
