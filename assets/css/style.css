@@ -139,6 +139,8 @@ html:not(.cn-on) .cn-text { display: none; }
 }
 .cd-box .n { font-size: 26px; font-weight: 800; color: var(--green); line-height: 1.1; }
 .cd-box .l { font-size: 11px; color: var(--ink-2); text-transform: uppercase; letter-spacing: .6px; }
+.cd-box.cd-today { padding: 14px 26px; }
+.cd-box.cd-today .today-msg { font-size: 24px; font-weight: 800; color: var(--green); white-space: nowrap; }
 
 .btn-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 .btn {
@@ -192,7 +194,19 @@ html:not(.cn-on) .cn-text { display: none; }
   font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px;
 }
 .book-text { padding: 14px 20px 16px; font-size: 18px; line-height: 1.5; }
-.book-text .en-line { font-weight: 600; }
+.book-text .en-line { font-weight: 600; display: block; }
+/* ★ 每一句話獨立一行 */
+.book-text .sen { display: block; }
+.book-text .en-line .sen + .sen { margin-top: 5px; }
+.book-text .book-cn .sen + .sen { margin-top: 3px; }
+/* ★ 句子獨立成行後：詩頁與規則頁只收句距，不縮字、不縮圖
+     （縮小只留給矮螢幕／手機／開中文時，見下方 media，正常大螢幕維持大字大圖） */
+.book-text.is-poem .poem-en { line-height: 1.42; }
+.book-text.is-poem .poem-cn { line-height: 1.42; }
+.book-text.is-poem .en-line .sen + .sen { margin-top: 3px; }
+.book-text.is-poem .book-cn .sen + .sen { margin-top: 2px; }
+.book-text.is-rules .en-line .sen + .sen { margin-top: 3px; }
+.book-text.is-rules .book-cn .sen + .sen { margin-top: 2px; }
 .book-cn {
   display: block; margin-top: 8px; font-size: 15px; color: var(--ink-2);
   font-weight: 400;
@@ -232,6 +246,8 @@ html:not(.cn-on) .book-cn { display: none; }
   }
   .book-img-wrap { height: 100%; }
   .book-img { max-height: min(52vh, 460px); }
+  /* 文字比圖高時，圖的上下留白改用卡片底色，不要出現米色帶 */
+  .book-img-wrap { background: transparent; }
   .book-text {
     display: flex; flex-direction: column; justify-content: center;
     padding: 18px 22px; font-size: 19px;
@@ -253,6 +269,46 @@ html:not(.cn-on) .book-cn { display: none; }
   html.cn-on .book-text.is-poem .poem-cn { font-size: 14px; }
 }
 
+/* --- 直立平板（如 iPad 768x1024）：詩頁與規則頁句子多，圖要縮才不會超出一屏 --- */
+@media (min-width: 700px) and (orientation: portrait) {
+  .book-stage.is-poem .book-img,
+  .book-stage.is-rules .book-img { max-height: 30vh; }
+  html.cn-on .book-stage.is-poem .book-img,
+  html.cn-on .book-stage.is-rules .book-img { max-height: 26vh; }
+  html.cn-on .book-text.is-rules { font-size: 15px; line-height: 1.3; }
+  html.cn-on .book-text.is-rules .book-cn { font-size: 13px; line-height: 1.22; }
+  html.cn-on .book-text.is-rules .en-line .sen + .sen { margin-top: 2px; }
+}
+
+/* --- 句子分行後：詩頁直立平板也開雙欄；手機再收一檔 --- */
+@media (min-width: 700px) {
+  html.cn-on .book-text.is-poem {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start;
+  }
+  html.cn-on .book-text.is-poem .en-line,
+  html.cn-on .book-text.is-poem .book-cn { display: block; margin-top: 0; }
+}
+@media (max-width: 699px) {
+  .book-stage.is-poem .book-img { max-height: 26vh; }
+  .book-text.is-poem .poem-en { font-size: 14.5px; line-height: 1.32; }
+  .book-text.is-poem .poem-cn { font-size: 13px; line-height: 1.3; }
+  .book-stage.is-rules .book-img { max-height: 30vh; }
+  .book-text.is-rules { font-size: 15px; }
+  /* 開中文時詩頁／規則頁行數翻倍，手機上再壓一檔 */
+  html.cn-on .book-stage.is-rules .book-img { max-height: 22vh; }
+  /* 詩頁 12 句中 + 英，手機開中文時改雙欄，才不會擠出螢幕 */
+  html.cn-on .book-text.is-poem {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: start;
+  }
+  html.cn-on .book-text.is-poem .en-line,
+  html.cn-on .book-text.is-poem .book-cn { display: block; margin-top: 0; }
+  html.cn-on .book-text.is-poem .poem-en { font-size: 12px; line-height: 1.22; }
+  html.cn-on .book-text.is-poem .poem-cn { font-size: 11.5px; line-height: 1.2; }
+  html.cn-on .book-text.is-rules { font-size: 13.5px; line-height: 1.25; }
+  html.cn-on .book-text.is-rules .book-cn { font-size: 12.5px; line-height: 1.2; }
+  html.cn-on .book-text { padding: 10px 14px 12px; }
+}
+
 /* --- 很矮的橫屏（如 1024x600 投影）再收一檔 --- */
 @media (orientation: landscape) and (max-height: 700px) {
   .page-book .wrap { padding-top: 10px; }
@@ -263,6 +319,18 @@ html:not(.cn-on) .book-cn { display: none; }
   .book-img { max-height: min(42vh, 320px); }
   .book-text { padding: 10px 18px 12px; font-size: 17px; }
   .book-nav { padding: 8px 14px; }
+  /* 只有矮螢幕才壓詩頁／規則頁（句子最多那兩頁） */
+  .book-stage.is-poem .book-img { max-height: 32vh; }
+  .book-text.is-poem .poem-en { font-size: 15px; line-height: 1.3; }
+  .book-text.is-poem .poem-cn { font-size: 13px; line-height: 1.28; }
+  html.cn-on .book-stage.is-poem .book-img,
+  html.cn-on .book-stage.is-rules .book-img { max-height: 26vh; }
+  html.cn-on .book-text.is-poem .poem-en { font-size: 14px; }
+  html.cn-on .book-text.is-poem .poem-cn { font-size: 12px; }
+  html.cn-on .book-text.is-rules { font-size: 14.5px; line-height: 1.26; }
+  html.cn-on .book-text.is-rules .book-cn { font-size: 12.5px; line-height: 1.2; }
+  html.cn-on .book-text.is-rules .en-line .sen + .sen { margin-top: 1px; }
+  html.cn-on .book-text.is-rules .book-cn .sen + .sen { margin-top: 0; }
 }
 
 /* --- 窄螢幕（手機直屏）：詩頁行距收緊，圓點改為可橫向捲動的單行 --- */

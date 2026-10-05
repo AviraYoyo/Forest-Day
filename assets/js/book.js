@@ -21,7 +21,41 @@
     return p.n ? `Page ${p.n} / ${total}` : (p.title || '');
   }
 
-  function multiline(s) { return esc(s).replace(/\n/g, '<br>'); }
+  /* ★ 每一句話獨立一行：英文按 . ! ? 切句，中文按 。！？ 切句 */
+  function splitEn(s) {
+    const out = []; let buf = '';
+    for (let k = 0; k < s.length; k++) {
+      buf += s[k];
+      if (/[.!?]/.test(s[k])) {
+        /* 標點後要先吃掉閉引號（"Check your bag!" I have...），
+           引號留在前一句，下一行才不會出現多餘的 " */
+        let j = k + 1;
+        while (j < s.length && /["”’]/.test(s[j])) j++;
+        const rest = s.slice(j);
+        if (rest && /^\s+["“']?\s*[A-Z]/.test(rest)) {
+          buf += s.slice(k + 1, j);
+          out.push(buf.trim()); buf = '';
+          k = j - 1;
+        }
+      }
+    }
+    if (buf.trim()) out.push(buf.trim());
+    return out.length ? out : [s];
+  }
+  function splitCn(s) {
+    const m = s.match(/[^。！？]+[。！？]|[^。！？]+$/g);
+    return (m && m.length) ? m.map(x => x.trim()).filter(Boolean) : [s];
+  }
+  /* 詩頁：先按原本的換行拆，再按句子拆 */
+  function linesOf(text, isCn, isPoem) {
+    const chunks = isPoem ? text.split('\n') : [text];
+    const sp = isCn ? splitCn : splitEn;
+    return chunks.reduce((acc, c) => acc.concat(sp(c)), []).filter(Boolean);
+  }
+  function blockLines(text, cls, isCn, isPoem) {
+    return linesOf(text, isCn, isPoem)
+      .map(t => `<span class="sen${cls ? ' ' + cls : ''}">${esc(t)}</span>`).join('');
+  }
 
   function render() {
     const p = BOOK_PAGES[i];
@@ -33,14 +67,16 @@
       txt.classList.add('is-poem');
       stage.classList.add('is-poem');
       txt.innerHTML = `
-        <span class="en-line poem-en">${multiline(p.en)}</span>
-        <span class="book-cn poem-cn">${multiline(p.cn)}</span>`;
+        <span class="en-line poem-en">${blockLines(p.en, '', false, true)}</span>
+        <span class="book-cn poem-cn">${blockLines(p.cn, '', true, true)}</span>`;
     } else {
       txt.classList.remove('is-poem');
       stage.classList.remove('is-poem');
+      txt.classList.toggle('is-rules', !!p.rules);
+      stage.classList.toggle('is-rules', !!p.rules);
       txt.innerHTML = `
-        <span class="en-line">${esc(p.en)}</span>
-        <span class="book-cn">${esc(p.cn)}</span>`;
+        <span class="en-line">${blockLines(p.en, '', false, false)}</span>
+        <span class="book-cn">${blockLines(p.cn, '', true, false)}</span>`;
     }
     prev.disabled = (i === 0);
     next.disabled = (i === BOOK_PAGES.length - 1);

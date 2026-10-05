@@ -8,7 +8,7 @@
 const SCHOOL_CONFIG = {
   schoolName: "Fr. Cucchiara Memorial School",
   className: "P.2",
-  tripDate: "2026-10-30",                       // 出發日期 YYYY-MM-DD
+  tripDate: "2026-10-26",                       // 出發日期 YYYY-MM-DD（活動 10/26 上午 9:30 開始）
   tripPlace: "Tai Shui Hang, Ma On Shan",       // 大水坑
   teacherName: "Miss Lee"
 };
@@ -25,20 +25,21 @@ const NAV = [
 ];
 
 /* =========================================================
-   27 個目標詞（4 個主題組）
+   31 個目標詞（4 個主題組）
    ========================================================= */
 const WORDS = [
-  // A. 大自然與場地（7）
+  // A. 大自然與場地（9）
   { en: "forest",             cn: "森林",     grp: "nature",  pos: "n.",   icon: "🌲", sent: "Look! This is our forest." },
   { en: "river",              cn: "河流",     grp: "nature",  pos: "n.",   icon: "🏞️", sent: "The river is cold!" },
-  { en: "rock",               cn: "石頭",     grp: "nature",  pos: "n.",   icon: "🪨", sent: "We are climbing on the rocks." },
+  { en: "rock",               cn: "石頭",     grp: "nature",  pos: "n.",   icon: "🪨", sent: "The rocks are big and grey." },
   { en: "mud",                cn: "泥漿",     grp: "nature",  pos: "n.",   icon: "🟤", sent: "Mud on our hands!" },
   { en: "tree",               cn: "樹",       grp: "nature",  pos: "n.",   icon: "🌳", sent: "It is a big tree." },
   { en: "bird",               cn: "小鳥",     grp: "nature",  pos: "n.",   icon: "🐦", sent: "The bird is singing." },
   { en: "bamboo",             cn: "竹",       grp: "nature",  pos: "n.",   icon: "🎍", sent: "The bamboo is long and green.", note: "只要求指認圖片" },
+  { en: "mountain",           cn: "山",       grp: "nature",  pos: "n.",   icon: "⛰️", sent: "Look at the big mountain!" },
+  { en: "grass",              cn: "草",       grp: "nature",  pos: "n.",   icon: "🌿", sent: "We are sitting on the grass." },
   // B. 動作與物件（9）——現在進行式主力
   { en: "build",   ing: "building",   cn: "建造", grp: "action", pos: "v.", icon: "🧱", sent: "We are building a raft." },
-  { en: "climb",   ing: "climbing",   cn: "攀爬", grp: "action", pos: "v.", icon: "🧗", sent: "She is climbing the rope." },
   { en: "catch",   ing: "catching",   cn: "捉",   grp: "action", pos: "v.", icon: "🐟", sent: "He is catching a fish." },
   { en: "splash",  ing: "splashing",  cn: "潑水", grp: "action", pos: "v.", icon: "💦", sent: "We are splashing in the water." },
   { en: "carry",   ing: "carrying",   cn: "搬運", grp: "action", pos: "v.", icon: "📦", sent: "Amy is carrying an inner tube." },
@@ -46,14 +47,17 @@ const WORDS = [
   { en: "raft",               cn: "竹筏",     grp: "action",  pos: "n.",   icon: "🛶", sent: "Our raft is on the water!" },
   { en: "rope",               cn: "繩",       grp: "action",  pos: "n.",   icon: "🪢", sent: "The rope is long and strong." },
   { en: "inner tube",         cn: "泳圈內胎", grp: "action",  pos: "n.",   icon: "🛟", sent: "Amy is carrying an inner tube." },
+  { en: "dam",                cn: "水壩",     grp: "action",  pos: "n.",   icon: "🌊", sent: "Amy is building a dam." },
   // C. 裝備
   { en: "long-sleeve shirt",  cn: "長袖衫",   grp: "bring", pos: "n.", icon: "👕", sent: "I have my long-sleeve shirt." },
-  { en: "walking shoes",      cn: "步行鞋",   grp: "bring", pos: "n.", icon: "👟", sent: "My walking shoes are brown." },
-  { en: "water shoes",        cn: "包趾水鞋", grp: "bring", pos: "n.", icon: "🩴", sent: "You must wear water shoes." },
+  { en: "sneakers",           cn: "運動鞋",   grp: "bring", pos: "n.", icon: "👟", sent: "My sneakers are brown." },
+  { en: "slippers",           cn: "拖鞋",     grp: "bring", pos: "n.", icon: "🩴", sent: "These are my slippers." },
   { en: "towel",              cn: "毛巾",     grp: "bring", pos: "n.", icon: "🧣", sent: "Where is my towel?" },
   { en: "hat",                cn: "帽子",     grp: "bring", pos: "n.", icon: "👒", sent: "My hat is yellow." },
   { en: "raincoat",           cn: "雨衣",     grp: "bring", pos: "n.", icon: "🧥", sent: "It is raining. Put on your raincoat." },
   { en: "mosquito repellent", cn: "驅蚊液",   grp: "bring", pos: "n.", icon: "🦟", sent: "I have mosquito repellent.", note: "只要求指認，不評量拼寫" },
+  { en: "sunscreen",          cn: "防曬霜",   grp: "bring", pos: "n.", icon: "🧴", sent: "Put on your sunscreen." },
+  { en: "lunch",              cn: "午餐",     grp: "bring", pos: "n.", icon: "🍱", sent: "I have my lunch." },
   // D. 感受
   { en: "excited", cn: "興奮", grp: "feel", pos: "adj.", icon: "🤩", sent: "We are excited!" },
   { en: "scared",  cn: "害怕", grp: "feel", pos: "adj.", icon: "😨", sent: "I am scared. I can try." },
@@ -82,9 +86,9 @@ const BOOK_PAGES = [
     cn: "今天是我們的森林日！我們要去森林。我們等不及了！",
     targets: ["forest", "excited"] },
   { img: "p02.jpg",  n: 2,
-    en: 'Miss Lee says, "Check your bag!" I have my hat and my water shoes.',
-    cn: "李老師說：「檢查你的背包！」我有帽子和包趾水鞋。",
-    targets: ["hat", "water shoes"] },
+    en: 'Miss Lee says, "Check your bag!" I have my hat and my slippers.',
+    cn: "李老師說：「檢查你的背包！」我有帽子和拖鞋。",
+    targets: ["hat", "slippers"] },
   { img: "p03.jpg",  n: 3, rules: true,
     en: '"You must stay with your group," says Miss Lee. "You must not run alone."',
     cn: "李老師說：「你必須跟著你的組別。」「你不可以獨自亂跑。」",
@@ -110,9 +114,9 @@ const BOOK_PAGES = [
     cn: "我們的竹筏下水了！Tom 在找魚。嘩啦！",
     targets: ["raft", "catch"] },
   { img: "p10.jpg",  n: 9, brave: true,
-    en: '"What is Amy doing?" "She is climbing." "You must go slowly!" says Miss Lee.',
-    cn: "「Amy 在做什麼？」「她在攀爬。」「你必須慢慢走！」李老師說。",
-    targets: ["climb", "must"] },
+    en: '"What is Amy doing?" "She is building a dam." "You must work together!" says Miss Lee.',
+    cn: "「Amy 在做什麼？」「她在建水壩。」「你們必須一起合作！」李老師說。",
+    targets: ["dam", "build"] },
   { img: "p12.jpg",  n: 10,
     en: "Mud on our hands! We are laughing. What fun!",
     cn: "手上有泥！我們在笑。真好玩！",
@@ -122,12 +126,12 @@ const BOOK_PAGES = [
     cn: "要回家了。我們很累，但是我們很開心。",
     targets: ["tired"] },
   { img: "p13.jpg",  title: "In the forest — by P.2 ___", poem: true,
-    en: "What are we doing?\nWe are playing in the forest. What fun!\nWhat is Tom doing?\nHe is looking for fish.\nWhat is Amy doing?\nShe is climbing. How brave!\nLook at the bird. What is it doing?\nIt is singing in the tree.\nWhat are we doing now?\nWe are going home.",
-    cn: "我們在做什麼？\n我們在森林裡玩。真好玩！\nTom 在做什麼？\n他在找魚。\nAmy 在做什麼？\n她在攀爬。真勇敢！\n看看那隻小鳥。牠在做什麼？\n牠在樹上唱歌。\n我們現在在做什麼？\n我們要回家了。",
+    en: "What are we doing?\nWe are playing in the forest. What fun!\nWhat is Tom doing?\nHe is looking for fish.\nWhat is Amy doing?\nShe is building a dam.\nLook at the bird. What is it doing?\nIt is singing in the tree.\nWhat are we doing now?\nWe are going home.",
+    cn: "我們在做什麼？\n我們在森林裡玩。真好玩！\nTom 在做什麼？\n他在找魚。\nAmy 在做什麼？\n她在建水壩。\n看看那隻小鳥。牠在做什麼？\n牠在樹上唱歌。\n我們現在在做什麼？\n我們要回家了。",
     targets: ["bird", "sing"] },
-  { img: "p15-rules.jpg",  title: "The Forest Rules",
-    en: "You must stay with your group. You must wear water shoes. You must go slowly. You must try. You must not run on the rocks. You must not push your friends. You must not go alone.",
-    cn: "你必須跟著你的組別。你必須穿水鞋。你必須慢慢走。你必須試試。你不可以在石頭上跑。你不可以推朋友。你不可以獨自走。",
+  { img: "p15-rules.jpg",  title: "The Forest Rules", rules: true,
+    en: "You must stay with your group. You must wear slippers. You must go slowly. You must try. You must not run on the rocks. You must not push your friends. You must not go alone.",
+    cn: "你必須跟著你的組別。你必須穿拖鞋。你必須慢慢走。你必須試試。你不可以在石頭上跑。你不可以推朋友。你不可以獨自走。",
     targets: ["must", "must not"] }
 ];
 
@@ -146,7 +150,7 @@ const TRY_PAGES = [
    ========================================================= */
 const MUST_RULES = [
   { en: "stay with your group",          cn: "跟著你的組別" },
-  { en: "wear water shoes",              cn: "穿水鞋" },
+  { en: "wear slippers",                  cn: "穿拖鞋" },
   { en: "go slowly",                     cn: "慢慢走" },
   { en: "try",                           cn: "試試看" },
   { en: "put on your raincoat when it rains", cn: "下雨時穿上雨衣" },
@@ -168,7 +172,7 @@ const MUST_NOT_RULES = [
 const SORT_CARDS = [
   { en: "stay with your group",   cn: "跟著組別",   bucket: "must" },
   { en: "run on the wet rocks",   cn: "在濕石上跑", bucket: "mustnot" },
-  { en: "wear water shoes",       cn: "穿水鞋",     bucket: "must" },
+  { en: "wear slippers",          cn: "穿拖鞋",     bucket: "must" },
   { en: "push your friends",      cn: "推朋友",     bucket: "mustnot" },
   { en: "put on your raincoat",   cn: "穿上雨衣",   bucket: "must" },
   { en: "go alone",               cn: "獨自走",     bucket: "mustnot" },
@@ -189,13 +193,13 @@ const ACTION_VERBS = ["building", "climbing", "catching", "splashing", "carrying
    小測驗 10 題
    ========================================================= */
 const QUIZ = [
-  { q: "What is Amy doing?", img: "p10.jpg", opts: ["She is climbing.", "She is sleeping.", "She is swimming."], a: 0 },
+  { q: "What is Amy doing?", img: "p10.jpg", opts: ["She is building a dam.", "She is sleeping.", "She is swimming."], a: 0 },
   { q: "What is it doing?",  img: "p13.jpg", opts: ["It is jumping.", "It is singing.", "It is eating."], a: 1 },
   { q: "What are they doing?", img: "p12.jpg", opts: ["They are playing in the mud.", "They are reading.", "They are running."], a: 0 },
   { q: "What is he doing?",  img: "p09.jpg", opts: ["He is looking for fish.", "He is riding a bike.", "He is drawing."], a: 0 },
   { q: "What are you doing?", img: "p05.jpg", opts: ["We are building a raft!", "We are reading a book.", "We are sleeping."], a: 0 },
   { q: "What is she doing?", img: "p06.jpg", opts: ["She is carrying an inner tube.", "She is carrying a fish.", "She is carrying a bird."], a: 0 },
-  { q: "You ______ wear water shoes in the river.", img: "p08.jpg", opts: ["must", "must not", "do not"], a: 0 },
+  { q: "You ______ wear slippers in the river.", img: "p08.jpg", opts: ["must", "must not", "do not"], a: 0 },
   { q: "You ______ push your friends.", img: "p03.jpg", opts: ["must", "must not", "can"], a: 1 },
   { q: "You ______ go alone in the forest.", img: "p03.jpg", opts: ["must", "must not", "always"], a: 1 },
   { q: "You ______ take your rubbish home.", img: "p14.jpg", opts: ["must not", "must", "am"], a: 1 }
@@ -206,8 +210,8 @@ const QUIZ = [
    ========================================================= */
 const BRING_LIST = [
   { en: "long-sleeve shirt and long pants", cn: "長袖衫和長褲（防蚊）", icon: "👕", must: true },
-  { en: "comfortable walking shoes",        cn: "舒適的步行鞋",         icon: "👟", must: true },
-  { en: "closed-toe water shoes",           cn: "包趾水鞋",             icon: "🩴", must: true },
+  { en: "comfortable sneakers",              cn: "舒適的運動鞋",         icon: "👟", must: true },
+  { en: "slippers",                       cn: "拖鞋",                 icon: "🩴", must: true },
   { en: "a hat",                            cn: "帽子",                 icon: "👒", must: true },
   { en: "a raincoat",                       cn: "雨衣",                 icon: "🧥", must: true },
   { en: "a towel",                          cn: "毛巾",                 icon: "🧣", must: true },

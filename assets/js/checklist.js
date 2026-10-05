@@ -15,7 +15,6 @@
         <span class="ic">${b.icon}</span>
         <span class="tx">
           <span class="en">${esc(b.en)}</span>
-          <span class="cn">${esc(b.cn)}</span>
         </span>
       </label>`).join('');
     list.querySelectorAll('input').forEach(cb => cb.addEventListener('change', () => {
@@ -27,7 +26,7 @@
 
   const resetBtn = document.getElementById('resetBring');
   if (resetBtn) resetBtn.addEventListener('click', () => {
-    if (confirm('Clear all ticks? 清除所有勾選？')) { localStorage.removeItem(KEY); Object.keys(saved).forEach(k => delete saved[k]); render(); }
+    if (confirm('Clear all ticks?')) { localStorage.removeItem(KEY); Object.keys(saved).forEach(k => delete saved[k]); render(); }
   });
 
   render();
