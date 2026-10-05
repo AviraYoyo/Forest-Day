@@ -31,7 +31,7 @@ function buildNav() {
       <a class="brand" href="index.html"><span class="leaf">🌳</span> Forest Day</a>
       <nav class="nav-links">
         ${NAV.map(n => `<a href="${n.href}" class="${n.href === here ? 'active' : ''}">
-            <span class="en-text">${n.icon} ${n.en}</span><span class="cn-text">${n.icon} ${n.cn}</span>
+            <span class="en-text">${n.icon} ${n.en}</span><span class="cn-text">${n.cn}</span>
           </a>`).join('')}
       </nav>
       <button class="cn-toggle" id="cnToggle" title="Show Chinese / 顯示中文">中文</button>

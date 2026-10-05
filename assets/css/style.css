@@ -39,6 +39,9 @@ a { color: var(--green); }
 [data-cn] { display: inline; }
 html.cn-on .cn-text { display: inline; }
 html:not(.cn-on) .cn-text { display: none; }
+/* 導覽列：英文永遠在；開中文時在後面接中文（只出現一次 emoji） */
+html:not(.cn-on) .nav-links .cn-text { display: none; }
+.nav-links a .cn-text { margin-left: 5px; font-weight: 500; }
 
 /* =========================================================
    Header / Nav
