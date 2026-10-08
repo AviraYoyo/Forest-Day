@@ -572,3 +572,22 @@ footer {
 .rise { animation: rise .45s ease both; }
 .rise-1 { animation-delay: .05s; } .rise-2 { animation-delay: .12s; }
 .rise-3 { animation-delay: .19s; } .rise-4 { animation-delay: .26s; }
+
+/* =========================================================
+   横屏（iPad 横屏 / 16:9 Chrome）：限制首页主图高度，
+   保证底部 3 个按钮在首屏完整可见，不让大图挤出屏幕。
+   手机竖屏与窄窗口不触发。
+   ========================================================= */
+@media (orientation: landscape) {
+  .hero { padding: 18px 22px; margin-bottom: 16px; }
+  .hero h1 { font-size: 27px; margin: 0 0 4px; }
+  .hero p { margin-bottom: 10px; }
+  .hero-img { margin-bottom: 12px; }
+  .hero-img img {
+    display: block;
+    margin: 0 auto;
+    max-height: 44vh;   /* 图高跟随视窗高度，横屏下自动缩小 */
+    width: auto;
+    max-width: 100%;
+  }
+}
