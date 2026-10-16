@@ -24,7 +24,7 @@
       <div class="flip" tabindex="0">
         <div class="flip-inner">
           <div class="flip-face flip-front">
-            <div class="ic">${w.icon}</div>
+            <div class="ic">${(() => { const s = w.en.replace(/\s+/g, '-').toLowerCase(); return `<img src="assets/img/words/${s}.jpg" alt="${esc(w.en)}" loading="lazy" onerror="this.replaceWith(document.createTextNode('${w.icon}'))">`; })()}</div>
             <div class="w">${esc(w.en)}</div>
             <div class="pos">${w.pos}</div>
           </div>

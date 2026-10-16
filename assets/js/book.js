@@ -47,31 +47,43 @@
     return (m && m.length) ? m.map(x => x.trim()).filter(Boolean) : [s];
   }
   /* 詩頁：先按原本的換行拆，再按句子拆 */
+  /* 詩頁（歌詞）：嚴格按原本換行顯示，不按句號再切 */
   function linesOf(text, isCn, isPoem) {
-    const chunks = isPoem ? text.split('\n') : [text];
+    if (isPoem) return text.split('\n').map(s => s.trim()).filter(Boolean);
     const sp = isCn ? splitCn : splitEn;
-    return chunks.reduce((acc, c) => acc.concat(sp(c)), []).filter(Boolean);
+    return sp(text).filter(Boolean);
   }
   function blockLines(text, cls, isCn, isPoem) {
     return linesOf(text, isCn, isPoem)
-      .map(t => `<span class="sen${cls ? ' ' + cls : ''}">${esc(t)}</span>`).join('');
+      .map(t => {
+        const vlabel = isPoem && /^\[.+\]$/.test(t.trim());
+        return `<span class="sen${cls ? ' ' + cls : ''}${vlabel ? ' verse-label' : ''}">${esc(t)}</span>`;
+      }).join('');
   }
 
   function render() {
     const p = BOOK_PAGES[i];
-    img.src = 'assets/img/book/' + p.img;
-    img.alt = p.title || ('Page ' + p.n);
     pageNo.textContent = pageLabel(p);
     if (titleEl) titleEl.textContent = p.title ? p.title : '';
     if (p.poem) {
-      txt.classList.add('is-poem');
       stage.classList.add('is-poem');
+      txt.classList.add('is-poem');
+      stage.classList.remove('song-playing');
+      img.style.display = 'none';
       txt.innerHTML = `
+        <div class="song-player">
+          <audio id="forestAudio" controls preload="metadata" src="${p.song}"></audio>
+        </div>
         <span class="en-line poem-en">${blockLines(p.en, '', false, true)}</span>
         <span class="book-cn poem-cn">${blockLines(p.cn, '', true, true)}</span>`;
+      bindSong();
     } else {
-      txt.classList.remove('is-poem');
       stage.classList.remove('is-poem');
+      txt.classList.remove('is-poem');
+      stage.classList.remove('song-playing');
+      img.style.display = '';
+      img.src = 'assets/img/book/' + p.img;
+      img.alt = p.title || ('Page ' + p.n);
       txt.classList.toggle('is-rules', !!p.rules);
       stage.classList.toggle('is-rules', !!p.rules);
       txt.innerHTML = `
@@ -82,6 +94,15 @@
     next.disabled = (i === BOOK_PAGES.length - 1);
     dots.querySelectorAll('button').forEach((d, k) => d.classList.toggle('on', k === i));
     stage.classList.remove('rise'); void stage.offsetWidth; stage.classList.add('rise');
+  }
+
+  /* 詩頁：唱片跟著音頻轉動（播放時轉、暫停/結束時停） */
+  function bindSong() {
+    const audio = document.getElementById('forestAudio');
+    if (!audio) return;
+    audio.addEventListener('play',  () => stage.classList.add('song-playing'));
+    audio.addEventListener('pause', () => stage.classList.remove('song-playing'));
+    audio.addEventListener('ended', () => stage.classList.remove('song-playing'));
   }
 
   dots.innerHTML = BOOK_PAGES.map((p, k) =>
