@@ -14,7 +14,7 @@
   const autoBtn = document.getElementById('autoBtn');
   const titleEl = document.getElementById('bookTitle');
 
-  let i = 0, timer = null;
+  let i = 0;
 
   function pageLabel(p) {
     const total = BOOK_PAGES.filter(x => x.n).length;
@@ -62,6 +62,7 @@
   }
 
   function render() {
+    if ('speechSynthesis' in window) { window.speechSynthesis.cancel(); setReadBtn(true); }
     const p = BOOK_PAGES[i];
     pageNo.textContent = pageLabel(p);
     if (titleEl) titleEl.textContent = p.title ? p.title : '';
@@ -100,9 +101,83 @@
   function bindSong() {
     const audio = document.getElementById('forestAudio');
     if (!audio) return;
-    audio.addEventListener('play',  () => stage.classList.add('song-playing'));
+    audio.addEventListener('play',  () => {
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      const ba = document.getElementById('blockAudio');
+      if (ba && !ba.paused) ba.pause();          // 兩個播放器互斥
+      stage.classList.add('song-playing');
+    });
     audio.addEventListener('pause', () => stage.classList.remove('song-playing'));
     audio.addEventListener('ended', () => stage.classList.remove('song-playing'));
+  }
+
+  /* 書本下方固定歌曲區：用詩頁資料渲染同一塊（唱片 + 播放器 + 歌詞） */
+  const songBlock = document.getElementById('songBlock');
+  if (songBlock) {
+    const poem = BOOK_PAGES.find(p => p.poem);
+    if (poem) {
+      const songText = document.getElementById('songText');
+      songText.innerHTML = `
+        <div class="song-player">
+          <audio id="blockAudio" controls preload="metadata" src="${poem.song}"></audio>
+        </div>
+        <span class="en-line poem-en">${blockLines(poem.en, '', false, true)}</span>
+        <span class="book-cn poem-cn">${blockLines(poem.cn, '', true, true)}</span>`;
+      const ba = document.getElementById('blockAudio');
+      ba.addEventListener('play', () => {
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        const fa = document.getElementById('forestAudio');
+        if (fa && !fa.paused) fa.pause();        // 兩個播放器互斥
+        songBlock.classList.add('song-playing');
+      });
+      ba.addEventListener('pause', () => songBlock.classList.remove('song-playing'));
+      ba.addEventListener('ended', () => songBlock.classList.remove('song-playing'));
+    }
+  }
+
+  /* 朗讀本頁：用瀏覽器內建語音念書本英文內容（不含任何按鈕） */
+  function setReadBtn(idle) {
+    autoBtn.innerHTML = idle
+      ? '🔊 Read this page <span class="cn-text">朗讀本頁</span>'
+      : '⏹ Stop <span class="cn-text">停止</span>';
+  }
+  /* 挑最「正常/自然」的英音（en-GB）語音；挑不到就交給系統預設英音 */
+  function pickGbVoice() {
+    if (!('speechSynthesis' in window)) return null;
+    const vs = window.speechSynthesis.getVoices() || [];
+    if (!vs.length) return null;
+    const gb = vs.filter(v => /^en[-_]GB/i.test(v.lang));
+    if (!gb.length) return null;
+    const prefer = ['Daniel', 'UK English', 'Libby', 'George', 'Google UK', 'Arthur', 'Maisie', 'Serena', 'Emma', 'Natasha', 'Rosie'];
+    for (const key of prefer) {
+      const hit = gb.find(v => v.name.indexOf(key) !== -1);
+      if (hit) return hit;
+    }
+    return gb[0];
+  }
+  function speakPage() {
+    const p = BOOK_PAGES[i];
+    let text;
+    if (p.poem) {
+      text = [...txt.querySelectorAll('.poem-en .sen')]
+        .filter(s => !s.classList.contains('verse-label'))
+        .map(s => s.textContent.trim()).join(' ');
+    } else {
+      text = [...txt.querySelectorAll('.en-line .sen')]
+        .map(s => s.textContent.trim()).join(' ');
+    }
+    if (!text) return;
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-GB';                 // 英音
+    u.rate = 1; u.pitch = 1;          // 不變速，用最正常的預設語速
+    const v = pickGbVoice();
+    if (v) u.voice = v;
+    u.onend = () => setReadBtn(true);
+    u.onerror = () => setReadBtn(true);
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(u);
+    }
   }
 
   dots.innerHTML = BOOK_PAGES.map((p, k) =>
@@ -119,14 +194,23 @@
     if (e.key === 'ArrowRight' && i < BOOK_PAGES.length - 1) { i++; render(); }
   });
 
-  /* 全班朗讀模式：每 8 秒自動翻頁 */
+  /* 「朗讀本頁」：點一下念出目前這頁的書本英文（不朗讀任何按鈕）；再點一下停止 */
   autoBtn.addEventListener('click', () => {
-    if (timer) { clearInterval(timer); timer = null; autoBtn.textContent = '▶ Read together'; return; }
-    autoBtn.textContent = '⏸ Stop';
-    timer = setInterval(() => {
-      if (i < BOOK_PAGES.length - 1) { i++; render(); }
-      else { clearInterval(timer); timer = null; autoBtn.textContent = '▶ Read together'; }
-    }, 8000);
+    if (!('speechSynthesis' in window)) {
+      alert('Your browser does not support reading aloud.');
+      return;
+    }
+    if (window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel();
+      setReadBtn(true);
+      return;
+    }
+    const fa = document.getElementById('forestAudio');
+    if (fa && !fa.paused) fa.pause();   // 與歌曲播放互斥，避免兩個聲音同時出
+    const ba = document.getElementById('blockAudio');
+    if (ba && !ba.paused) ba.pause();   // 下方歌曲區同樣互斥
+    setReadBtn(false);
+    speakPage();
   });
 
   /* 迷你讀本《I Can Try!》 */

@@ -637,3 +637,34 @@ footer {
     max-width: 100%;
   }
 }
+
+/* =========================================================
+   書本下方固定歌曲區（第 13 頁同一塊的複製，永遠顯示）
+   ========================================================= */
+.song-block {
+  background: var(--card); border-radius: 22px; overflow: hidden;
+  box-shadow: var(--shadow-lg); border: 1px solid var(--line);
+  max-width: 880px; margin: 0 auto;
+}
+.song-block .song-block-img {
+  background: #F0EDE2;
+  display: flex; align-items: center; justify-content: center;
+  padding: 28px 0;
+}
+.song-block .vinyl {
+  display: flex; align-items: center; justify-content: center;
+  width: min(60%, 260px); aspect-ratio: 1 / 1; border-radius: 50%;
+  background: radial-gradient(circle at center, #2b2b2b 0 32%, #161616 32% 100%);
+  box-shadow: 0 12px 30px rgba(0,0,0,.30);
+}
+.song-block.song-playing .vinyl-disc { animation-play-state: running; }
+/* 橫屏寬螢幕：與繪本詩頁同款雙欄（左唱片、右歌詞） */
+@media (min-width: 900px) and (orientation: landscape) {
+  .song-block {
+    max-width: none;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+    align-items: stretch;
+  }
+  .song-block .song-block-img { background: transparent; height: 100%; }
+}
