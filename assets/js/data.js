@@ -20,7 +20,8 @@ const NAV = [
   { href: "words.html",     en: "Words",           cn: "詞語銀行",   icon: "🔤" },
   { href: "sentences.html", en: "Sentences",       cn: "句子工場",   icon: "🧩" },
   { href: "quiz.html",      en: "Quiz",            cn: "小測驗",     icon: "⭐" },
-  { href: "bring.html",     en: "What to Bring",   cn: "活動須知",   icon: "🎒" }
+  { href: "bring.html",     en: "What to Bring",   cn: "活動須知",   icon: "🎒" },
+  { href: "music.html",     en: "Music",           cn: "主題曲",     icon: "🎵" }
   /* Grown-ups（parents.html）已從導覽列隱藏，老師可用網址直接開：parents.html */
 ];
 

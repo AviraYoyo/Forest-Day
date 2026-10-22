@@ -103,36 +103,10 @@
     if (!audio) return;
     audio.addEventListener('play',  () => {
       if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-      const ba = document.getElementById('blockAudio');
-      if (ba && !ba.paused) ba.pause();          // 兩個播放器互斥
       stage.classList.add('song-playing');
     });
     audio.addEventListener('pause', () => stage.classList.remove('song-playing'));
     audio.addEventListener('ended', () => stage.classList.remove('song-playing'));
-  }
-
-  /* 書本下方固定歌曲區：用詩頁資料渲染同一塊（唱片 + 播放器 + 歌詞） */
-  const songBlock = document.getElementById('songBlock');
-  if (songBlock) {
-    const poem = BOOK_PAGES.find(p => p.poem);
-    if (poem) {
-      const songText = document.getElementById('songText');
-      songText.innerHTML = `
-        <div class="song-player">
-          <audio id="blockAudio" controls preload="metadata" src="${poem.song}"></audio>
-        </div>
-        <span class="en-line poem-en">${blockLines(poem.en, '', false, true)}</span>
-        <span class="book-cn poem-cn">${blockLines(poem.cn, '', true, true)}</span>`;
-      const ba = document.getElementById('blockAudio');
-      ba.addEventListener('play', () => {
-        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-        const fa = document.getElementById('forestAudio');
-        if (fa && !fa.paused) fa.pause();        // 兩個播放器互斥
-        songBlock.classList.add('song-playing');
-      });
-      ba.addEventListener('pause', () => songBlock.classList.remove('song-playing'));
-      ba.addEventListener('ended', () => songBlock.classList.remove('song-playing'));
-    }
   }
 
   /* 朗讀本頁：用瀏覽器內建語音念書本英文內容（不含任何按鈕） */
@@ -206,9 +180,7 @@
       return;
     }
     const fa = document.getElementById('forestAudio');
-    if (fa && !fa.paused) fa.pause();   // 與歌曲播放互斥，避免兩個聲音同時出
-    const ba = document.getElementById('blockAudio');
-    if (ba && !ba.paused) ba.pause();   // 下方歌曲區同樣互斥
+    if (fa && !fa.paused) fa.pause();   // 與第 13 頁歌曲播放互斥，避免兩個聲音同時出
     setReadBtn(false);
     speakPage();
   });
