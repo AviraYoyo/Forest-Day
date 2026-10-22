@@ -51,7 +51,7 @@ const WORDS = [
   // C. 裝備
   { en: "long-sleeve shirt",  cn: "長袖衫",   grp: "bring", pos: "n.", icon: "👕", sent: "I have my long-sleeve shirt." },
   { en: "sneakers",           cn: "運動鞋",   grp: "bring", pos: "n.", icon: "👟", sent: "My sneakers are brown." },
-  { en: "slippers",           cn: "拖鞋",     grp: "bring", pos: "n.", icon: "🩴", sent: "These are my slippers." },
+  { en: "water shoes",        cn: "水鞋",     grp: "bring", pos: "n.", icon: "🩴", sent: "These are my water shoes." },
   { en: "towel",              cn: "毛巾",     grp: "bring", pos: "n.", icon: "🧣", sent: "Where is my towel?" },
   { en: "hat",                cn: "帽子",     grp: "bring", pos: "n.", icon: "👒", sent: "My hat is yellow." },
   { en: "raincoat",           cn: "雨衣",     grp: "bring", pos: "n.", icon: "🧥", sent: "It is raining. Put on your raincoat." },
@@ -86,9 +86,9 @@ const BOOK_PAGES = [
     cn: "今天是我們的森林日！我們要去森林。我們等不及了！",
     targets: ["forest", "excited"] },
   { img: "p02.jpg",  n: 2,
-    en: 'Miss Lee says, "Check your bag!" I have my hat and my slippers.',
-    cn: "李老師說：「檢查你的背包！」我有帽子和拖鞋。",
-    targets: ["hat", "slippers"] },
+    en: 'Miss Lee says, "Check your bag!" I have my hat and my water shoes.',
+    cn: "李老師說：「檢查你的背包！」我有帽子和水鞋。",
+    targets: ["hat", "water shoes"] },
   { img: "p03.jpg",  n: 3, rules: true,
     en: '"You must stay with your group," says Miss Lee. "You must not run alone."',
     cn: "李老師說：「你必須跟著你的組別。」「你不可以獨自亂跑。」",
@@ -130,8 +130,8 @@ const BOOK_PAGES = [
     cn: "[第一段]\n我們在做什麼？快來看！\n我們在森林裡玩耍，快樂無比。\n多好玩，多好玩，陽光多燦爛，\n我們沿著落葉小徑，在晨光中蹦跳。\n[第二段]\nTom 在小溪旁做什麼？\n他在找閃閃發光的魚。\nAmy 在做什麼？看，她在那裡——\n她在細心地築一座小水壩。\n[副歌]\n森林好朋友，一起來，\n去探險，唱我們的歌！\n往上看，我們看見什麼？\n一隻小鳥在樹上！\n[第三段]\n牠在做什麼？仔細聽：\n牠在唱一首甜美的歌，讓大家聽見。\n我們現在在做什麼？一天結束了，\n我們一起回家，我和你。",
     targets: ["bird", "sing"] },
   { img: "p15-rules.jpg",  title: "The Forest Rules", rules: true,
-    en: "You must stay with your group. You must wear slippers. You must go slowly. You must try. You must not run on the rocks. You must not push your friends. You must not go alone.",
-    cn: "你必須跟著你的組別。你必須穿拖鞋。你必須慢慢走。你必須試試。你不可以在石頭上跑。你不可以推朋友。你不可以獨自走。",
+    en: "You must stay with your group. You must wear water shoes. You must go slowly. You must try. You must not run on the rocks. You must not push your friends. You must not go alone.",
+    cn: "你必須跟著你的組別。你必須穿水鞋。你必須慢慢走。你必須試試。你不可以在石頭上跑。你不可以推朋友。你不可以獨自走。",
     targets: ["must", "must not"] }
 ];
 
@@ -150,7 +150,7 @@ const TRY_PAGES = [
    ========================================================= */
 const MUST_RULES = [
   { en: "stay with your group",          cn: "跟著你的組別" },
-  { en: "wear slippers",                  cn: "穿拖鞋" },
+  { en: "wear water shoes",               cn: "穿水鞋" },
   { en: "go slowly",                     cn: "慢慢走" },
   { en: "try",                           cn: "試試看" },
   { en: "put on your raincoat when it rains", cn: "下雨時穿上雨衣" },
@@ -172,7 +172,7 @@ const MUST_NOT_RULES = [
 const SORT_CARDS = [
   { en: "stay with your group",   cn: "跟著組別",   bucket: "must" },
   { en: "run on the wet rocks",   cn: "在濕石上跑", bucket: "mustnot" },
-  { en: "wear slippers",          cn: "穿拖鞋",     bucket: "must" },
+  { en: "wear water shoes",       cn: "穿水鞋",     bucket: "must" },
   { en: "push your friends",      cn: "推朋友",     bucket: "mustnot" },
   { en: "put on your raincoat",   cn: "穿上雨衣",   bucket: "must" },
   { en: "go alone",               cn: "獨自走",     bucket: "mustnot" },
@@ -199,7 +199,7 @@ const QUIZ = [
   { q: "What is he doing?",  img: "p09.jpg", opts: ["He is looking for fish.", "He is riding a bike.", "He is drawing."], a: 0 },
   { q: "What are you doing?", img: "p05.jpg", opts: ["We are building a raft!", "We are reading a book.", "We are sleeping."], a: 0 },
   { q: "What is she doing?", img: "p06.jpg", opts: ["She is carrying an inner tube.", "She is carrying a fish.", "She is carrying a bird."], a: 0 },
-  { q: "You ______ wear slippers in the river.", img: "p08.jpg", opts: ["must", "must not", "do not"], a: 0 },
+  { q: "You ______ wear water shoes in the river.", img: "p08.jpg", opts: ["must", "must not", "do not"], a: 0 },
   { q: "You ______ push your friends.", img: "p03.jpg", opts: ["must", "must not", "can"], a: 1 },
   { q: "You ______ go alone in the forest.", img: "p03.jpg", opts: ["must", "must not", "always"], a: 1 },
   { q: "You ______ take your rubbish home.", img: "p14.jpg", opts: ["must not", "must", "am"], a: 1 }
@@ -211,7 +211,7 @@ const QUIZ = [
 const BRING_LIST = [
   { en: "long-sleeve shirt and long pants", cn: "長袖衫和長褲（防蚊）", icon: "👕", must: true },
   { en: "comfortable sneakers",              cn: "舒適的運動鞋",         icon: "👟", must: true },
-  { en: "slippers",                       cn: "拖鞋",                 icon: "🩴", must: true },
+  { en: "water shoes",                      cn: "水鞋",                 icon: "🩴", must: true },
   { en: "a hat",                            cn: "帽子",                 icon: "👒", must: true },
   { en: "a raincoat",                       cn: "雨衣",                 icon: "🧥", must: true },
   { en: "a towel",                          cn: "毛巾",                 icon: "🧣", must: true },
