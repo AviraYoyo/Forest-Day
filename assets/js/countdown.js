@@ -1,6 +1,6 @@
 /* =========================================================
    index.html 專用 — 倒數器
-   目標：SCHOOL_CONFIG.tripDate 早上 9:30
+   目標：SCHOOL_CONFIG.countdownEnd（預設回退到 tripDate 早上 9:30）
    到點後顯示 "It's today!"
    ========================================================= */
 (function () {
@@ -9,12 +9,15 @@
 
   const TICK = 30000; // 30 秒刷一次
 
+  // 結束時刻：優先用 countdownEnd（含具體時間），否則回退 tripDate 09:30
+  const targetStr = SCHOOL_CONFIG.countdownEnd || (SCHOOL_CONFIG.tripDate + 'T09:30:00');
+
   function render(msg, cls) {
     el.innerHTML = `<div class="cd-box cd-today ${cls || ''}"><div class="today-msg">${msg}</div></div>`;
   }
 
   function tick() {
-    const target = new Date(SCHOOL_CONFIG.tripDate + 'T09:30:00');
+    const target = new Date(targetStr);
     const diff = target - new Date();
 
     if (diff <= 0) { render("It's today! 🎉"); return; }

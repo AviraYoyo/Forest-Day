@@ -9,6 +9,7 @@ const SCHOOL_CONFIG = {
   schoolName: "Fr. Cucchiara Memorial School",
   className: "P.2",
   tripDate: "2026-10-26",                       // 出發日期 YYYY-MM-DD（活動 10/26 上午 9:30 開始）
+  countdownEnd: "2026-10-27T23:59:00",          // 首頁倒數器結束時刻（10/27 晚 23:59）；此後顯示 "It's today!"
   tripPlace: "Tai Shui Hang, Ma On Shan",       // 大水坑
   teacherName: "Miss Lee"
 };
