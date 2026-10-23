@@ -1,9 +1,87 @@
 /* =========================================================
    sentences.html 專用 — 造句 + 規則分類
-   手機可玩：字卡／卡片「點一下選取 → 點空格／桶落位」
-   電腦仍可拖曳，且可拖進任意一格
+   互動改用 Pointer Events：滑鼠 / 手指觸控 / 觸控筆 都能用
+   ① 點一下選取 → 再點空格（或桶）落位
+   ② 也可以直接用手指／滑鼠拖（不再依賴 HTML5 拖放，觸控屏才會動）
    ========================================================= */
 (function () {
+
+  /* ---------- 共用的「點選 + 拖曳」引擎 ---------- */
+  const DRAG_MIN = 8;           // 移動超過這個距離才算拖曳，否則算「點選」
+  let dragInProgress = false;   // 拖曳中：避免落點元素同時被當成點選
+
+  /**
+   * 讓一個元素同時支援「點選」與「拖曳」，滑鼠／觸控／觸控筆都吃。
+   * opts.findTarget(node) 由座標下的元素回傳合法落點（空格或桶），不是就回傳 null
+   * opts.onTap()          純點選
+   * opts.onDrop(target)   拖曳到落點
+   * opts.canDrag()        是否允許拖曳
+   */
+  function pickOrDrag(el, opts) {
+    let pid = null, sx = 0, sy = 0, active = false, ghost = null, hover = null;
+
+    function clearHover() {
+      if (hover) { hover.classList.remove('over'); hover = null; }
+    }
+    function startGhost() {
+      const r = el.getBoundingClientRect();
+      ghost = el.cloneNode(true);
+      ghost.classList.add('drag-ghost');
+      ghost.classList.remove('picked');
+      ghost.style.width = r.width + 'px';
+      ghost.style.height = r.height + 'px';
+      document.body.appendChild(ghost);
+      el.classList.add('dragging');
+      dragInProgress = true;
+    }
+    function moveGhost(e) {
+      ghost.style.transform =
+        'translate(' + (e.clientX - ghost.offsetWidth / 2) + 'px,' +
+                       (e.clientY - ghost.offsetHeight / 2) + 'px)';
+    }
+    function targetAt(e) {
+      const under = document.elementFromPoint(e.clientX, e.clientY);
+      return under ? opts.findTarget(under) : null;
+    }
+    function cleanup() {
+      if (ghost) { ghost.remove(); ghost = null; }
+      el.classList.remove('dragging');
+      clearHover();
+      dragInProgress = false;
+      active = false; pid = null;
+    }
+
+    el.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;   // 只吃滑鼠左鍵
+      if (opts.canDrag && !opts.canDrag()) return;
+      pid = e.pointerId; sx = e.clientX; sy = e.clientY; active = true;
+      try { el.setPointerCapture(pid); } catch (err) {}
+    });
+
+    el.addEventListener('pointermove', function (e) {
+      if (!active || e.pointerId !== pid) return;
+      if (!ghost) {
+        if (Math.abs(e.clientX - sx) + Math.abs(e.clientY - sy) < DRAG_MIN) return;
+        startGhost();
+      }
+      e.preventDefault();          // 避免滑鼠拖曳時選到文字
+      moveGhost(e);
+      const t = targetAt(e);
+      if (t !== hover) { clearHover(); hover = t; if (t) t.classList.add('over'); }
+    });
+
+    el.addEventListener('pointerup', function (e) {
+      if (!active || e.pointerId !== pid) return;
+      const wasDrag = !!ghost;
+      const t = wasDrag ? targetAt(e) : null;
+      cleanup();
+      if (wasDrag) { if (t && opts.onDrop) opts.onDrop(t); }
+      else if (opts.onTap) opts.onTap();
+    });
+
+    el.addEventListener('pointercancel', function () { if (active) cleanup(); });
+    el.addEventListener('lostpointercapture', function () { if (ghost) cleanup(); });
+  }
 
   /* ---------- 遊戲一：造句（三個空格，位置自由） ---------- */
   const poolSubj = document.getElementById('poolSubj');
@@ -17,7 +95,6 @@
 
   if (poolSubj && slots) {
     const POOL_OF = { subj: poolSubj, be: poolBe, verb: poolVerb };
-    let dragged = null;   // 電腦拖曳中的字卡
     let picked = null;    // 已選取（等待點空格）的字卡
 
     const shuffle = a => a.slice().sort(() => Math.random() - .5);
@@ -32,10 +109,12 @@
       el.textContent = t;
       el.dataset.t = t;
       el.dataset.kind = kind;
-      el.draggable = true;
-      el.addEventListener('click', () => pickTile(el));
-      el.addEventListener('dragstart', () => { dragged = el; el.classList.add('dragging'); });
-      el.addEventListener('dragend', () => el.classList.remove('dragging'));
+      pickOrDrag(el, {
+        canDrag: () => true,
+        onTap: () => pickTile(el),
+        findTarget: n => n.closest('.slot'),
+        onDrop: slot => placeInto(slot, el)
+      });
       return el;
     }
 
@@ -49,7 +128,6 @@
       renderPool(poolBe, ['is', 'am', 'are'], 'be');
       renderPool(poolVerb, shuffle(ACTION_VERBS), 'verb');
       clearAll();
-      bindSlots();
     }
 
     /* 選取字卡（再點一次取消） */
@@ -104,24 +182,17 @@
       clearMsg();
     }
 
-    function bindSlots() {
-      slots.querySelectorAll('.slot').forEach(s => {
-        s.addEventListener('click', () => {
-          /* 手上已有選取的字 → 放進這一格（該格原本的字會先退回） */
-          if (picked) { placeInto(s, picked); return; }
-          /* 沒選字 → 點已填的格子＝把字退回（空位留在原地） */
-          if (s.classList.contains('filled')) { returnTile(s); return; }
-          say('fb bad', 'Tap a word first, then tap a box.');
-        });
-        s.addEventListener('dragover', e => { e.preventDefault(); s.classList.add('over'); });
-        s.addEventListener('dragleave', () => s.classList.remove('over'));
-        s.addEventListener('drop', e => {
-          e.preventDefault(); s.classList.remove('over');
-          if (dragged) placeInto(s, dragged);
-          dragged = null;
-        });
+    /* 空格只需要「點」，綁一次就夠（不能每次重抽都重綁，否則會觸發兩次） */
+    slots.querySelectorAll('.slot').forEach(s => {
+      s.addEventListener('pointerup', () => {
+        if (dragInProgress) return;   // 正在拖曳，交給拖曳邏輯處理
+        /* 手上已有選取的字 → 放進這一格（該格原本的字會先退回） */
+        if (picked) { placeInto(s, picked); return; }
+        /* 沒選字 → 點已填的格子＝把字退回 */
+        if (s.classList.contains('filled')) { returnTile(s); return; }
+        say('fb bad', 'Tap a word first, then tap a box.');
       });
-    }
+    });
 
     checkBtn.addEventListener('click', () => {
       const [s1, s2, s3] = [...slots.querySelectorAll('.slot')];
@@ -168,16 +239,17 @@
   if (cardPool) {
     let score = 0, tries = 0, pickedCard = null;
 
+    function shuffle(a) { return a.sort(() => Math.random() - .5); }
+
     function init() {
       score = 0; tries = 0; pickedCard = null;
       sortFb.className = ''; sortFb.textContent = '';
       cardPool.innerHTML = shuffle([...SORT_CARDS]).map(c =>
-        `<div class="tile verb" draggable="true" data-en="${esc(c.en)}" data-cn="${esc(c.cn)}" data-b="${c.bucket}">
+        `<div class="tile verb" data-en="${esc(c.en)}" data-cn="${esc(c.cn)}" data-b="${c.bucket}">
            ${esc(c.en)}</div>`).join('');
       document.querySelectorAll('#bucketMust .drop-zone, #bucketMustNot .drop-zone').forEach(z => z.innerHTML = '');
-      bindSort();
+      bindCards();   // 卡片每次重抽都重建，所以要重新綁（桶不用，只綁一次）
     }
-    function shuffle(a) { return a.sort(() => Math.random() - .5); }
 
     function pickCard(c) {
       if (c.classList.contains('done')) return;
@@ -188,27 +260,30 @@
       sortFb.className = ''; sortFb.textContent = '';
     }
 
-    function bindSort() {
-      let dragged = null;
+    function bindCards() {
       cardPool.querySelectorAll('.tile').forEach(t => {
-        t.addEventListener('click', () => pickCard(t));
-        t.addEventListener('dragstart', () => { dragged = t; t.classList.add('dragging'); });
-        t.addEventListener('dragend', () => t.classList.remove('dragging'));
-      });
-      [bMust, bMustNot].forEach(b => {
-        b.addEventListener('click', () => {
-          if (pickedCard) { const c = pickedCard; pickedCard = null; dropCard(c, b); }
-          else { sortFb.className = 'fb bad'; sortFb.textContent = 'Tap a card first, then tap a bucket.'; }
-        });
-        b.addEventListener('dragover', e => { e.preventDefault(); b.classList.add('over'); });
-        b.addEventListener('dragleave', () => b.classList.remove('over'));
-        b.addEventListener('drop', e => {
-          e.preventDefault(); b.classList.remove('over');
-          if (dragged) dropCard(dragged, b);
-          dragged = null;
+        pickOrDrag(t, {
+          canDrag: () => !t.classList.contains('done'),
+          onTap: () => pickCard(t),
+          findTarget: n => n.closest('.bucket'),
+          onDrop: b => dropCard(t, b)
         });
       });
     }
+
+    /* 桶只綁一次（重複綁會讓點一次觸發兩次，回饋被覆蓋） */
+    [bMust, bMustNot].forEach(b => {
+      b.addEventListener('pointerup', () => {
+        if (dragInProgress) return;   // 正在拖曳，交給拖曳邏輯處理
+        if (pickedCard) {
+          const c = pickedCard; pickedCard = null;
+          dropCard(c, b);
+        } else {
+          sortFb.className = 'fb bad';
+          sortFb.textContent = 'Tap a card first, then tap a bucket.';
+        }
+      });
+    });
 
     function dropCard(card, bucket) {
       tries++;
@@ -218,7 +293,6 @@
         card.classList.remove('picked', 'dragging');
         card.classList.add('done');
         bucket.querySelector('.drop-zone').appendChild(card);
-        card.draggable = false;
         card.style.cursor = 'default';
         card.innerHTML = `${esc(card.dataset.en)}<span class="cn-text"> · ${esc(card.dataset.cn)}</span>`;
         sortFb.className = 'fb ok';
